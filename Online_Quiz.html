@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Online Quiz Maker</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="Online_Quiz.css">
+    </head>
+    <body>
+        <div>
+            <div class="head">
+                <h2>ONLINE QUIZ MAKER</h2>
+            </div>
+            <div id="create"> 
+                <br>
+                <button class="btn btn-primary" onclick="login()">Create Quiz</button>
+                <button class="btn btn-primary" onclick="quiz_details()">Attempt Quiz</button>
+            </div>
+        </div>
+        
+        <div id="loginsection" style="display: none;"> 
+            
+                <div id="login">
+                    <button class="btn btn-dark" onclick="login_form()">Login</button>
+                    <button class="btn btn-secondary" onclick=" reg_form()">Create New Account</button>
+                </div>
+        </div>
+        <div id="login_form" style="display: none;">
+            <h3 style="text-align: center;">Login</h3>
+            <form class="Login_form"  onsubmit="loginUser(event)">
+                <label>Username</label> <br>
+                <input type="text" name="username" > <br>
+                <label>Password</label> <br>
+                <input type="password" name="password"> <br>
+                <br>
+                <button type="submit" class="btn btn-success">Submit</button> <br>
+
+            </form>
+            <script src="Login_JS.js"></script> 
+        </div>
+        <div id="reg_form" style="display: none;">
+            <h3 style="text-align: center;">Registration</h3>
+            <form id="reg" class="Reg_form"  onsubmit="registerUser(event)">
+                <label>Full Name</label><br>
+                <input type="text" name="full_name"><br>
+                <label>Email</label><br>
+                <input type="email" name="email"><br>
+                <label>Username</label><br>
+                <input type="text" name="username" ><br>
+                <label>Password</label><br>
+                <input type="password" name="password"><br>
+                Create a strong password <br>
+                <label>Organization/Institution </label><br>
+                <input type="text" name="organization"><br>
+                <label>Role</label><br>
+                <select name="role" >
+                    <option>--select--</option>
+                    <option>Student</option>
+                    <option>Teacher</option>
+                    <option>Corporate Trainer</option>
+                    <option>Others</option>
+                </select><br>
+               
+                <br>
+                <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+            <script src="Regstration_JS.js"></script> 
+        </div>
+        <div id="quiz_details" style="display:none;">
+            <h3 style="text-align: center;">Quiz Details</h3>
+            <form class="Quiz_details">
+                <label>Quiz Title</label><br>
+                <input type="text" id="quizTitle"><br>
+                <label>Descrption</label><br>
+                <input type="text" id="quizDescription"><br>
+                <label>Quiz Category</label><br>
+                <select id="quizCategory">
+                    <option>--select--</option>
+                    <option>Education</option>
+                    <option>General Knowledge</option>
+                    <option>Technical</option>
+                    <option>Competitive Exams</option>
+                </select><br>
+                <label>Question Type</label><br>
+                <select id="questionType">
+                    <option>--select--</option>
+                    <option>MCQ</option>
+                    <option>True/False</option>
+                </select><br>
+                <label>Question Weightage</label><br>
+                <input type="number" id="quizWeightage"><br>
+                <br>
+                <button type="button" class="btn btn-secondary" onclick="quiz_questions(event)">Next</button>
+            </form>
+        </div>
+        <div id="quiz_questions" style="display: none;">
+            <h3 style="text-align: center;"> MCQ Questions</h3>
+            <form id="mcq_form">
+                <label >Qusetion</label><br>
+                <input id="mcq_question" type="text" class="mcq"><br>
+                <label>Option1</label><br>
+                <input id="option1" type="text"  class="mcq"><br>
+                <label>Option2</label><br>
+                <input id="option2" type="text"  class="mcq"><br>
+                <label>Option3</label><br>
+                <input id="option3" type="text"  class="mcq"><br>
+                <label>Option4</label><br>
+                <input id="option4" type="text"  class="mcq"><br>
+                <label>Correct answer</label><br>
+                <input id="correct_answer" type="text"  class="mcq"><br>
+                <br>
+                <button>Previous</button>
+                <button onclick="addQuestion( event)" type="button">Add Question</button>
+                <button onclick="submitQuiz(event)" type="button" class="btn btn-success">Submit</button>
+            </form>
+        </div>
+        <script>
+            function login(){
+                document.getElementById('create').style.display="none"
+                document.getElementById('loginsection').style.display="block"
+            }
+            function login_form(){
+                document.getElementById('loginsection').style.display="none"
+                document.getElementById('login_form').style.display="block"
+            }
+            function reg_form(){
+                document.getElementById('loginsection').style.display="none"
+                document.getElementById('reg_form').style.display="block"
+            } 
+            function quiz_question(){
+                document.getElementById('quiz_details').style.display="none"
+                document.getElementById('quiz_questions').style.display="block"
+            }
+            
+
+            function quiz_questions(event) {
+                event.preventDefault(); // Prevent form submission refresh
+
+                let title = document.getElementById('quizTitle').value.trim();
+                let description = document.getElementById('quizDescription').value.trim();
+                let category = document.getElementById('quizCategory').value;
+                let questionType = document.getElementById('questionType').value;
+                let weightage = document.getElementById('quizWeightage').value.trim();
+
+                if (!title || !description || category === "--select--" || questionType === "--select--" || !weightage) {
+
+                    alert("Please fill all fields before proceeding.");
+                    return;
+                }
+
+                fetch('OQ_Qdetails_php.php', {
+
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, description, category, questionType, weightage })
+                })
+                .then(response => response.json())
+                .then(data => {
+                if (data.success) {
+                    alert("Quiz details saved successfully!");
+                    document.getElementById('quiz_details').style.display = "none"; // Hide Quiz Details
+                    document.getElementById('quiz_questions').style.display = "block"; // Show MCQ Form
+                } else {
+                    alert("Failed to save quiz. Try again!");
+                }
+                })
+                .catch(error => console.error("Error:", error));
+            }
+
+            let questions = []; // Store questions
+
+function addQuestion(event) {
+    event.preventDefault(); // Prevent page reload
+
+    let question = document.getElementById('mcq_question').value;
+    let option1 = document.getElementById('option1').value;
+    let option2 = document.getElementById('option2').value;
+    let option3 = document.getElementById('option3').value;
+    let option4 = document.getElementById('option4').value;
+    let correct = document.getElementById('correct_answer').value;
+
+    if (question && option1 && option2 && option3 && option4 && correct) {
+        questions.push({ 
+            question, 
+            options: [option1, option2, option3, option4], 
+            correct 
+        });
+
+        document.getElementById('mcq_form').reset(); // Clear form fields
+        alert("Question added! Click 'Submit' when done.");
+    } else {
+        alert("Fill all fields before adding a question!");
+    }
+}
+
+function submitQuiz(event) {
+    event.preventDefault(); // Prevent form submission
+
+    if (questions.length === 0) {
+        alert("No questions added! Please add at least one question.");
+        return; // Stop submission
+    }
+
+    fetch('OQ_Question_php.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ questions })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        questions = []; // Clear stored questions
+        document.getElementById('mcq_form').reset();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("Submission failed! Check console for details.");
+    });
+}
+
+
+        </script>
+    </body>
+</html>

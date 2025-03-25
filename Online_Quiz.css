@@ -1,0 +1,61 @@
+.head{
+    text-align: center;
+    background-color: rgb(210, 210, 104);
+    height: 100px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#login,#create{
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Space between buttons */
+    margin-top: 20px;
+
+}
+.Login_form,.Reg_form{
+    text-align: center;
+    background-color: aquamarine;
+    margin-left: 350px;
+    margin-right: 350px;
+
+}
+label{
+    font-weight: bold;
+    color: #333; 
+    margin-bottom: 5px; 
+}
+.Reg_form{
+    background-color: cadetblue;
+}
+input,option{
+    padding: 6px;
+    margin-left: 50px;
+    margin-right: 50px;
+    height: 28px;
+    border: 1px solid black;
+}
+select{
+    margin-right: 50px;
+    margin-left: 50px;
+    width: 46%;
+}
+.Quiz_details{
+    text-align: center;
+    background-color: rgb(171, 226, 171);
+    margin-left: 350px;
+    margin-right: 350px;
+}
+#mcq_form{
+    text-align: center;
+    background-color: rgb(84, 110, 140);
+    margin-left: 350px;
+    margin-right: 350px;   
+}
+.mcq{
+    height: 50;
+    padding-left: 50px;
+    padding-bottom: 30px;
+}
+            
